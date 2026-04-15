@@ -5,40 +5,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/style.css" />
-    <title>Discovery</title>
+    <title>JamJournal - Discover</title>
 </head>
 <body>
     <%- include('partials/nav') %>
 
-    <h1>Discover New Music!</h1>
-    <p>Explore 10 random songs from 8 genres!</p>
-
-    <% discoverData.forEach(function(category) { %>
-        <% if(category.songs && category.songs.length > 0) { %>
-            <div class="mb-5">
-                <h3 class="text-primary border-bottom pb-2 mb-3"><%= category.genre %></h3>
-                <div class="scrolling-wrapper">
-                    <% category.songs.forEach(function(track) { %>
-                        <div class="card song-card h-100 shadow-sm">
-                            <img src="<%= track.artworkUrl100 %>" class="card-img-top" alt="Album Art">
-                            <div class="card-body d-flex flex-column">
-                                <h6 class="card-title text-truncate" title="<%= track.trackName %>"><%= track.trackName %></h6>
-                                <p class="card-text small text-muted text-truncate mb-2"><%= track.artistName %></p>
-                                <% if (track.previewUrl) { %>
-                                    <audio controls class="w-100 mt-auto mb-2" style="height: 30px;">
-                                        <source src="<%= track.previewUrl %>" type="audio/mpeg">
-                                    </audio>
-                                <% } %>
-                                <a href="<%= track.trackViewUrl %>" target="_blank" class="btn btn-sm btn-outline-secondary mt-1">View on iTunes</a>
-                            </div>
-                        </div>
-                    <% }); %>
+    <main class="discover-page">
+        <section class="discover-hero">
+            <div class="container">
+                <div class="discover-hero__content">
+                    <p class="eyebrow mb-2">Explore music</p>
+                    <h1 class="hero-title discover-title mb-3">Discover something worth replaying.</h1>
+                    <p class="hero-subtext mb-0">
+                        Browse hand-picked random tracks across genres, preview songs instantly, and jump into new sounds.
+                    </p>
                 </div>
             </div>
-        <% } %>
-    <% }); %>
+        </section>
+
+        <section class="container pb-5">
+            <% discoverData.forEach(function(category) { %>
+                <% if (category.songs && category.songs.length > 0) { %>
+                    <section class="genre-section mb-5">
+                        <div class="genre-section__header">
+                            <div>
+                                <p class="section-kicker mb-1">Genre spotlight</p>
+                                <h2 class="genre-section__title"><%= category.genre %></h2>
+                            </div>
+                            <span class="genre-badge"><%= category.songs.length %> tracks</span>
+                        </div>
+
+                        <div class="scrolling-wrapper discover-scroll">
+                            <% category.songs.forEach(function(track) { %>
+                                <article class="discover-card">
+                                    <div class="discover-card__image-wrap">
+                                        <img
+                                            src="<%= track.artworkUrl100 ? track.artworkUrl100.replace('100x100bb', '400x400bb') : '/images/placeholder-album.png' %>"
+                                            class="discover-card__image"
+                                            alt="Album art for <%= track.trackName %> by <%= track.artistName %>">
+                                    </div>
+
+                                    <div class="discover-card__body">
+                                        <p class="discover-card__label mb-1">Track</p>
+                                        <h3 class="discover-card__title" title="<%= track.trackName %>">
+                                            <%= track.trackName %>
+                                        </h3>
+
+                                        <p class="discover-card__artist mb-2" title="<%= track.artistName %>">
+                                            <%= track.artistName %>
+                                        </p>
+
+                                        <% if (track.collectionName) { %>
+                                            <p class="discover-card__album mb-3" title="<%= track.collectionName %>">
+                                                <%= track.collectionName %>
+                                            </p>
+                                        <% } %>
+
+                                        <% if (track.previewUrl) { %>
+                                            <audio controls class="discover-card__audio">
+                                                <source src="<%= track.previewUrl %>" type="audio/mpeg">
+                                            </audio>
+                                        <% } %>
+
+                                        <div class="discover-card__actions mt-3">
+                                            <a
+                                                href="/track/<%= encodeURIComponent(track.artistName) %>/<%= encodeURIComponent(track.trackName) %>"
+                                                class="btn btn-brand btn-sm-nav">
+                                                View Details
+                                            </a>
+
+                                            <a
+                                                href="<%= track.trackViewUrl %>"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                class="btn btn-ghost btn-sm-nav">
+                                                iTunes
+                                            </a>
+                                        </div>
+                                    </div>
+                                </article>
+                            <% }); %>
+                        </div>
+                    </section>
+                <% } %>
+            <% }); %>
+        </section>
+    </main>
+
     <%- include('partials/footer') %>
 </body>
 </html>

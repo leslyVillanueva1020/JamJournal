@@ -1,43 +1,47 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-custom">
   <div class="container">
-    <!-- Brand / Title -->
-    <a class="navbar-brand fw-bold fs-4" href="/">Jam Journal</a>
 
-    <!-- Hamburger menu for small screens -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-      aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Brand -->
+    <a class="navbar-brand brand-logo" href="/">
+      Jam<span>Journal</span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Collapsible area -->
     <div class="collapse navbar-collapse" id="mainNav">
 
-      <!-- Search bar (only when logged in) -->
       <% if (user) { %>
-      <form class="d-flex ms-lg-3 my-3 my-lg-0 flex-grow-1" action="/searching" method="get" role="search">
-        <input type="search" name="q" class="form-control me-2" placeholder="Search iTunes…" />
-        <button type="submit" class="btn btn-outline-light">Search</button>
+      <form class="d-flex ms-lg-4 my-3 my-lg-0 flex-grow-1 nav-search" action="/searching" method="get">
+        <input type="search" name="q" class="form-control" placeholder="Search songs..." />
       </form>
       <% } %>
 
-      <!-- Right-side nav links -->
-      <ul class="navbar-nav ms-auto align-items-center">
+      <ul class="navbar-nav ms-auto align-items-center gap-lg-2">
+
         <li class="nav-item"><a class="nav-link" href="/discover">Discover</a></li>
         <li class="nav-item"><a class="nav-link" href="/lyrics">Lyrics</a></li>
         <li class="nav-item"><a class="nav-link" href="/follows">Follows</a></li>
 
         <% if (user) { %>
-          <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
           <li class="nav-item"><a class="nav-link" href="/library">Library</a></li>
-          <li class="nav-item">
-            <form action="/auth/logout" method="post" class="d-inline">
-              <button type="submit" class="btn btn-link nav-link p-0 m-0 align-baseline">Logout</button>
+          <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+
+          <li class="nav-item ms-lg-2">
+            <form action="/auth/logout" method="post">
+              <button type="submit" class="btn btn-ghost btn-sm-nav">Logout</button>
             </form>
           </li>
+
         <% } else { %>
           <li class="nav-item"><a class="nav-link" href="/auth/login">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="/auth/signup">Sign Up</a></li>
+          <li class="nav-item ms-lg-2">
+            <a class="btn btn-brand btn-sm-nav" href="/auth/signup">Sign Up</a>
+          </li>
         <% } %>
+
       </ul>
     </div>
   </div>
