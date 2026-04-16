@@ -43,6 +43,7 @@ const pool = mysql.createPool({
 
 //=============================== HOME ROUTE =============================
 app.get('/', async (req, res) => {
+  let heroSong = null;  
   let myReviews = [];
   let friendsFeed = [];
 
@@ -121,9 +122,31 @@ app.get('/', async (req, res) => {
       }
     }
 
+    // ===== Random hero song for logged-out users =====
+    if (!req.session.user) {
+    const sqlHeroSong = `
+        SELECT 
+        Title AS title,
+        Artist AS artist,
+        Genre AS genre,
+        Album_art_url AS albumArt
+        FROM songs
+        WHERE Album_art_url IS NOT NULL
+        ORDER BY RAND()
+        LIMIT 1
+    `;
+
+    const [heroRows] = await pool.query(sqlHeroSong);
+
+    if (heroRows.length > 0) {
+        heroSong = heroRows[0];
+    }
+    }
+
     res.render('home.ejs', {
       friendsFeed: friendsFeed,
       myReviews: myReviews,
+      heroSong: heroSong,
       error: null
     });
 
@@ -132,6 +155,7 @@ app.get('/', async (req, res) => {
     res.status(500).render('home.ejs', {
       friendsFeed: [],
       myReviews: [],
+      heroSong: null,
       error: 'Error loading your home feed. Please try again.'
     });
   }

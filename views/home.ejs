@@ -128,12 +128,25 @@
             <div class="col-lg-6">
               <div class="hero-visual">
                 <div class="floating-card floating-card--main">
-                  <img src="/images/placeholder-album.png" alt="Album art" class="floating-card__art">
+                  <img 
+                    src="<%= heroSong && heroSong.albumArt ? heroSong.albumArt : '/images/placeholder-album.png' %>" 
+                    alt="Album art" 
+                    class="floating-card__art">
+
                   <div>
-                    <p class="floating-card__label mb-1">Trending review</p>
-                    <h3 class="floating-card__title mb-1">Blinding Lights</h3>
-                    <p class="floating-card__artist mb-2">The Weeknd</p>
-                    <span class="rating-pill">9/10</span>
+                    <p class="floating-card__label mb-1">Featured track</p>
+
+                    <h3 class="floating-card__title mb-1">
+                      <%= heroSong ? heroSong.title : 'Blinding Lights' %>
+                    </h3>
+
+                    <p class="floating-card__artist mb-2">
+                      <%= heroSong ? heroSong.artist : 'The Weeknd' %>
+                    </p>
+
+                    <span class="rating-pill">
+                      <%= heroSong && heroSong.genre ? heroSong.genre : 'Pop' %>
+                    </span>
                   </div>
                 </div>
 
